@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
 interface NavbarProps {
-  count: number;
   toggleMenu: () => void;
 }
 
-export default function Navbar({ count, toggleMenu }: NavbarProps) {
+export default function Navbar({ toggleMenu }: NavbarProps) {
   const [isPortrait, setIsPortrait] = useState(
     typeof window !== "undefined" ? window.innerHeight > window.innerWidth : true
   );
@@ -26,7 +25,6 @@ export default function Navbar({ count, toggleMenu }: NavbarProps) {
           : "h-full left-0 top-0 flex flex-col"
       } fixed bg-stone-700 dark:bg-stone-700 shadow-lg z-20`}
     >
-      {/* Count button */}
       <button
         onClick={toggleMenu}
         className="m-2 px-3 py-2 text-sm font-bold text-stone-200 dark:text-stone-200 

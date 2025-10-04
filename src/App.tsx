@@ -6,7 +6,6 @@ import StationMap from "./StationMap";
 import StationModal from "./StationModal";
 import MenuPanel from "./MenuPanel";
 import {
-    BrowserRouter as Router,
     Routes,
     Route,
     useSearchParams,
@@ -20,10 +19,9 @@ async function fetchStations() {
     }
     return res.json();
 }
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -51,7 +49,7 @@ function App() {
         onStationSelect={handleStationSelect}
       />
 
-      <Navbar count={count} toggleMenu={() => setMenuVisible(!menuVisible)} />
+      <Navbar toggleMenu={() => setMenuVisible(!menuVisible)} />
       <MenuPanel visible={menuVisible} onClose={() => setMenuVisible(false)} />
 
       <Routes>

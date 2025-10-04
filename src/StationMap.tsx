@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-
+import type { LatLngExpression } from 'leaflet';
 interface StationMapProps {
     stations: any[];
     isLoading: boolean;
@@ -13,17 +13,20 @@ export default function StationMap({
     isError,
     onStationSelect,
 }: StationMapProps) {
+
+    const center: LatLngExpression = [64.1807, 25.8032];
+
     return (
         <MapContainer
-            center={[64.1807, 25.8032]}
+            center={center}
             zoom={6}
             scrollWheelZoom={true}
             className="absolute inset-0 z-10"
+            attributionControl={true}
         >
             <TileLayer
                 url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-				//                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                //                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
             {/* Show markers when data is loaded */}
