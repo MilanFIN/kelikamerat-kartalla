@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router } from "react-router-dom";
 import { StationsProvider } from "./providers/stationscontext";
+import { MapTypeProvider } from "./providers/mapcontext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -12,9 +13,11 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
             <StationsProvider>
-                <Router>
-                    <App />
-                </Router>
+                <MapTypeProvider>
+                    <Router>
+                        <App />
+                    </Router>
+                </MapTypeProvider>
             </StationsProvider>
         </QueryClientProvider>
     </StrictMode>

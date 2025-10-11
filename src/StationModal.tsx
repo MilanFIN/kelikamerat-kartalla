@@ -14,9 +14,11 @@ export default function StationModal({
     onClose,
 }: StationModalProps) {
     const [copied, setCopied] = useState(false);
-    
+
     const { stations, addStation, removeStation } = useStationsContext();
-    const [isStarred, setIsStarred] = useState(stations.some((station: { id: any; }) => station.id === stationId));
+    const [isStarred, setIsStarred] = useState(
+        stations.some((station: { id: any }) => station.id === stationId)
+    );
 
     const handleCopyUrl = async () => {
         try {
@@ -28,7 +30,6 @@ export default function StationModal({
         }
     };
 
-
     const handleToggleStar = () => {
         if (!isStarred) {
             addStation({ id: stationId, name: stationName });
@@ -36,7 +37,6 @@ export default function StationModal({
             removeStation(stationId);
         }
         setIsStarred((prev) => !prev);
-
     };
 
     return (
@@ -46,39 +46,43 @@ export default function StationModal({
                        rounded-2xl shadow-lg p-6 flex flex-col"
         >
             <div className="relative w-full h-full grow">
-                <h2 className="text-xl font-bold h-1/5 text-black dark:text-white">
+                <h2 className="ml-4 text-xl font-bold h-1/5 text-black dark:text-white">
                     {stationName}
                 </h2>
 
-                {/* Copy URL Button */}
-                <button
-                    onClick={handleCopyUrl}
-                    className="ml-4 my-2 px-4 py-2 h-12 rounded-lg bg-stone-500 text-black hover:bg-stone-300 transition"
-                >
-                    {copied ? (
-                        "Copied!"
-                    ) : (
+                <div className="flex flex-row">
+                    {/* Copy URL Button */}
+                    <button
+                        onClick={handleCopyUrl}
+                        className="ml-4 my-2 px-4 py-2 h-12 rounded-lg bg-stone-500 text-black hover:bg-stone-300 transition flex items-center justify-center"
+                    >
+                        {copied ? (
+                            <span className="">Copied!</span>
+                        ) : (
+                            <img
+                                src="/copy.svg"
+                                alt="Copy URL"
+                                title="Copy URL"
+                                className="h-6 w-12"
+                            />
+                        )}
+                    </button>
+                    <button
+                        onClick={handleToggleStar}
+                        className="ml-2 my-2 px-4 py-2 h-12 rounded-lg bg-stone-500 text-black hover:bg-stone-300 transition"
+                    >
                         <img
-                            src={"/copy.svg"}
-                            alt="Copy URL"
-                            title="Copy URL"
+                            src={
+                                isStarred
+                                    ? "/star_full.svg"
+                                    : "/star_outline.svg"
+                            }
+                            alt={isStarred ? "Starred" : "Not Starred"}
+                            title={isStarred ? "Unstar" : "Star"}
                             className="h-8 w-12"
                         />
-                    )}
-                </button>
-
-                <button
-                    onClick={handleToggleStar}
-                    className="ml-2 my-2 px-4 py-2 h-12 rounded-lg bg-stone-500 text-black hover:bg-stone-300 transition"
-                >
-                    <img
-                        src={isStarred ? "/star_full.svg" : "/star_outline.svg"}
-                        alt={isStarred ? "Starred" : "Not Starred"}
-                        title={isStarred ? "Unstar" : "Star"}
-                        className="h-8 w-12"
-                    />
-                </button>
-
+                    </button>
+                </div>
                 <div className="w-full flex h-4/5 shrink mt-4">
                     <ImageViewer stationId={stationId} />
                 </div>

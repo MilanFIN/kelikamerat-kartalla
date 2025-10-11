@@ -50,7 +50,7 @@ function App() {
       />
 
       <Navbar toggleMenu={() => setMenuVisible(!menuVisible)} />
-      <MenuPanel visible={menuVisible} onClose={() => setMenuVisible(false)} />
+      <MenuPanel visible={menuVisible} onClose={() => setMenuVisible(false)} onStationSelect={handleStationSelect}/>
 
       <Routes>
         <Route path="/" 

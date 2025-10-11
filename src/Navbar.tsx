@@ -27,29 +27,11 @@ export default function Navbar({ toggleMenu }: NavbarProps) {
     >
       <button
         onClick={toggleMenu}
-        className="m-2 px-3 py-2 text-sm font-bold text-stone-200 dark:text-stone-200 
+        className="m-2 px-4 py-2 text-sm font-bold text-stone-200 dark:text-stone-200 
                    bg-stone-600 dark:bg-stone-600 hover:bg-stone-500 dark:hover:bg-stone-500 
                    rounded-xl transition"
       >
         ···
-      </button>
-
-      {/* Action button */}
-      <button
-        className="m-2 px-3 py-2 text-sm font-bold text-stone-200 dark:text-stone-200 
-                   bg-stone-600 dark:bg-stone-600 hover:bg-stone-500 dark:hover:bg-stone-500 
-                   rounded-xl transition"
-      >
-        A
-      </button>
-
-      {/* Settings button */}
-      <button
-        className="m-2 px-3 py-2 text-sm font-bold text-stone-200 dark:text-stone-200 
-                   bg-stone-600 dark:bg-stone-600 hover:bg-stone-500 dark:hover:bg-stone-500 
-                   rounded-xl transition"
-      >
-        S
       </button>
 
       {/* Google Play button */}
