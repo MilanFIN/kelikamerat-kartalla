@@ -1,4 +1,6 @@
+import { useState } from "react";
 import ImageViewer from "./ImageViewer";
+import { useStationsContext } from "./providers/stationscontext";
 
 interface StationModalProps {
     stationId: any;
@@ -6,7 +8,37 @@ interface StationModalProps {
     onClose: () => void;
 }
 
-export default function StationModal({ stationId, stationName, onClose }: StationModalProps) {
+export default function StationModal({
+    stationId,
+    stationName,
+    onClose,
+}: StationModalProps) {
+    const [copied, setCopied] = useState(false);
+    
+    const { stations, addStation, removeStation } = useStationsContext();
+    const [isStarred, setIsStarred] = useState(stations.some((station: { id: any; }) => station.id === stationId));
+
+    const handleCopyUrl = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 10000);
+        } catch (err) {
+            console.error("Failed to copy URL:", err);
+        }
+    };
+
+
+    const handleToggleStar = () => {
+        if (!isStarred) {
+            addStation({ id: stationId, name: stationName });
+        } else {
+            removeStation(stationId);
+        }
+        setIsStarred((prev) => !prev);
+
+    };
+
     return (
         <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
@@ -17,7 +49,37 @@ export default function StationModal({ stationId, stationName, onClose }: Statio
                 <h2 className="text-xl font-bold h-1/5 text-black dark:text-white">
                     {stationName}
                 </h2>
-                <div className="w-full flex h-4/5 shrink mt-8">
+
+                {/* Copy URL Button */}
+                <button
+                    onClick={handleCopyUrl}
+                    className="ml-4 my-2 px-4 py-2 h-12 rounded-lg bg-stone-500 text-black hover:bg-stone-300 transition"
+                >
+                    {copied ? (
+                        "Copied!"
+                    ) : (
+                        <img
+                            src={"/copy.svg"}
+                            alt="Copy URL"
+                            title="Copy URL"
+                            className="h-8 w-12"
+                        />
+                    )}
+                </button>
+
+                <button
+                    onClick={handleToggleStar}
+                    className="ml-2 my-2 px-4 py-2 h-12 rounded-lg bg-stone-500 text-black hover:bg-stone-300 transition"
+                >
+                    <img
+                        src={isStarred ? "/star_full.svg" : "/star_outline.svg"}
+                        alt={isStarred ? "Starred" : "Not Starred"}
+                        title={isStarred ? "Unstar" : "Star"}
+                        className="h-8 w-12"
+                    />
+                </button>
+
+                <div className="w-full flex h-4/5 shrink mt-4">
                     <ImageViewer stationId={stationId} />
                 </div>
 
