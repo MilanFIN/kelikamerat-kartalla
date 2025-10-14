@@ -37,6 +37,10 @@ export default function ImageViewer({ stationId }: ImageViewerProps) {
     // Fetch thumbnails
     useEffect(() => {
         if (!cameraIds) return;
+        
+        setSelectedImage(null);
+        setSelectedCameraId(null);
+        setThumbnails([]);
 
         let isMounted = true;
         const fetchThumbnails = async () => {
@@ -118,7 +122,7 @@ export default function ImageViewer({ stationId }: ImageViewerProps) {
     const message = renderMessage();
 
     return (
-        <div className="flex flex-col  px-4 mt-2 items-start w-full h-full">
+        <div className="flex flex-col mt-2 items-start w-full h-full">
             {/* Status message if needed */}
             {message && (
                 <p
