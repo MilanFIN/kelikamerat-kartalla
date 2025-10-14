@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import { useMapTypeContext } from "./providers/mapcontext";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import L from "leaflet";
 
 interface StationMapProps {
