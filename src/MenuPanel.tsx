@@ -5,6 +5,7 @@ import { useStationsContext } from "./providers/stationscontext";
 import { useMapTypeContext } from "./providers/mapcontext";
 import { useLanguageContext } from "./providers/languagecontext";
 import { MapType } from "./constants/map";
+import { useTranslation } from "react-i18next";
 
 interface MenuPanelProps {
     visible: boolean;
@@ -28,6 +29,7 @@ export default function MenuPanel({
     const { stations, removeStation } = useStationsContext();
     const { mapType, setMapType } = useMapTypeContext();
     const { language, setLanguage } = useLanguageContext();
+    const { t } = useTranslation();
 
     // Detect orientation change
     useEffect(() => {
@@ -72,14 +74,14 @@ export default function MenuPanel({
         >
             <div className="p-6 border-b border-stone-200 dark:border-stone-700">
                 <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
-                    Menu
+                    {t("menu")}
                 </h2>
             </div>
 
             {/* Map Style */}
             <div className="p-6 border-b border-stone-200 dark:border-stone-700">
                 <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
-                    Map Style
+                    {t("mapStyle")}
                 </h3>
                 <div className="flex flex-wrap gap-2 mb-4">
                     {Object.values(MapType).map((type) => (
@@ -101,7 +103,7 @@ export default function MenuPanel({
                 {/* Language Selector */}
                 <div>
                     <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
-                        Language
+                        {t("language")}
                     </h3>
                     <div className="flex gap-3">
                         {/* Finnish */}
@@ -134,7 +136,7 @@ export default function MenuPanel({
                                     fill="#003580"
                                 />
                             </svg>
-                            <span>FI</span>
+                            <span>{t("fi")}</span>
                         </button>
 
                         {/* English */}
@@ -177,7 +179,7 @@ export default function MenuPanel({
                                     d="M30,0v30M0,15h60"
                                 />
                             </svg>
-                            <span>EN</span>
+                            <span>{t("en")}</span>
                         </button>
                     </div>
                 </div>
@@ -186,7 +188,7 @@ export default function MenuPanel({
             {/* Bookmarked Stations */}
             <div className="p-6">
                 <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
-                    Bookmarked Stations
+                    {t("bookmarkedStations")}
                 </h3>
                 <ul className="space-y-2">
                     {stations.length > 0 ? (

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import "leaflet/dist/leaflet.css"
 import Navbar from "./Navbar"
@@ -8,6 +8,9 @@ import StationMap from "./StationMap"
 import StationModal from "./StationModal"
 import MenuPanel from "./MenuPanel"
 import { Routes, Route, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useLanguageContext } from "./providers/languagecontext"
+import { useTranslation } from "react-i18next"
 
 // Fetcher function
 async function fetchStations() {
@@ -17,11 +20,16 @@ async function fetchStations() {
   }
   return res.json()
 }
-import { useNavigate } from "react-router-dom"
 
 function App() {
   const [menuVisible, setMenuVisible] = useState(false)
   const navigate = useNavigate()
+  const { i18n } = useTranslation()
+  const { language } = useLanguageContext()
+
+  useEffect(() => {
+    i18n.changeLanguage(language)
+  }, [language, i18n])
 
   const {
     data: stations,

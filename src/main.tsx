@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { StationsProvider } from "./providers/stationscontext";
 import { MapTypeProvider } from "./providers/mapcontext.tsx";
 import { LanguageProvider } from "./providers/languagecontext";
+import "./i18n"
 
 const queryClient = new QueryClient();
 

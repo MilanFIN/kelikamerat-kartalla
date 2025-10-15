@@ -5,6 +5,7 @@ import type { LatLngExpression } from "leaflet";
 import { useMapTypeContext } from "./providers/mapcontext";
 import { useMemo } from "react";
 import L from "leaflet";
+import { useTranslation } from "react-i18next";
 
 interface StationMapProps {
     stations: any[];
@@ -21,6 +22,7 @@ export default function StationMap({
 }: StationMapProps) {
     const center: LatLngExpression = [64.1807, 25.8032];
     const { tileUrl } = useMapTypeContext();
+    const { t } = useTranslation();
 
     const cameraIcon = useMemo(() => {
         const svg = `
@@ -74,7 +76,7 @@ export default function StationMap({
                                         {station.name}
                                     </strong>
                                     <span className="text-xs text-stone-600">
-                                        Updated:{" "}
+                                        {t("updated")}:{" "}
                                         {new Date(
                                             station.updatedTime
                                         ).toLocaleString()}
@@ -86,7 +88,7 @@ export default function StationMap({
                                              bg-blue-500 hover:bg-blue-600 text-white
                                              transition-all duration-200 shadow-sm hover:shadow-md"
                                 >
-                                    View Details
+                                    {t("viewDetails")}
                                 </button>
                             </div>
                         </Popup>
