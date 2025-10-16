@@ -6,5 +6,9 @@
 	"en": "EN",
 	"bookmarkedStations": "Kirjanmerkityt asemat",
 	"viewDetails": "Näytä tiedot",
-	"updated": "Päivitetty"
+	"updated": "Päivitetty",
+	"bookmarked": "Kirjanmerkitty",
+	"bookmark": "Kirjanmerkki",
+	"copyUrl": "Kopioi URL",
+	"copied": "Kopioitu"
 }

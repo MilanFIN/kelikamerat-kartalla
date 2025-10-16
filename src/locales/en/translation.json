@@ -6,5 +6,9 @@
 	"en": "EN",
 	"bookmarkedStations": "Bookmarked Stations",
 	"viewDetails": "View Details",
-	"updated": "Updated"
+	"updated": "Updated",
+	"bookmarked": "Bookmarked",
+	"bookmark": "Bookmark",
+	"copyUrl": "Copy URL",
+	"copied": "Copied"
 }
