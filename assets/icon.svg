@@ -13,13 +13,16 @@
     </filter>
 
     <!-- Clip path for rounded background -->
-    <clipPath id="bgClip">
+    <!-- <clipPath id="bgClip">
       <rect x="48" y="48" width="928" height="928" rx="180" ry="180" />
+    </clipPath> -->
+    <clipPath id="bgClip">
+      <circle cx="512" cy="512" r="512" />
     </clipPath>
   </defs>
 
   <!-- Rounded green background -->
-  <rect x="48" y="48" width="928" height="928" rx="180" ry="180" fill="url(#bgGrad)" />
+  <circle cx="512" cy="512" r="464" fill="url(#bgGrad)" />
 
   <!-- Yellow accent lines
 	<g clip-path="url(#bgClip)">
@@ -34,7 +37,7 @@
   -->
 
   <!-- Fat camera body -->
-  <g transform="translate(132 180)" filter="url(#shadow)">
+  <g transform="translate(132 140)" filter="url(#shadow)">
     <!-- Main body -->
     <rect x="0" y="120" width="760" height="520" rx="90" ry="90"
           fill="#ffffff" stroke="#133424" stroke-width="36"/>
