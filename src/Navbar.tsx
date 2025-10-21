@@ -40,7 +40,7 @@ export default function Navbar({ toggleMenu }: NavbarProps) {
       </button>
 
       <a
-        href="https://play.google.com/store"
+        href="https://play.google.com/store/apps/details?id=com.kelikamerat.kartalla"
         target="_blank"
         rel="noopener noreferrer"
         className="m-1.5 p-2.5 bg-stone-700 hover:bg-stone-600 rounded-xl 
@@ -56,7 +56,7 @@ export default function Navbar({ toggleMenu }: NavbarProps) {
       </a>
 
       <a
-        href="https://github.com/your-repo"
+        href="https://github.com/MilanFIN/kelikamerat-kartalla"
         target="_blank"
         rel="noopener noreferrer"
         className="m-1.5 p-2.5 bg-stone-700 hover:bg-stone-600 rounded-xl 
