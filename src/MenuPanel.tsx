@@ -64,23 +64,23 @@ export default function MenuPanel({
     return (
         <div
             ref={panelRef}
-            className={`absolute bg-white dark:bg-stone-800 shadow-2xl z-30 
-                       border-r border-stone-200 dark:border-stone-700
+            className={`absolute bg-stone-800 dark:bg-stone-800 shadow-2xl z-30 
+                       border-r border-stone-700 dark:border-stone-700
                        ${
                            isPortrait
                                ? "top-20 left-0 w-full min-h-64 border-b"
                                : "top-0 left-20 h-full w-80"
                        }`}
         >
-            <div className="p-6 border-b border-stone-200 dark:border-stone-700">
-                <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
+            <div className="p-6 border-b border-stone-700 dark:border-stone-700">
+                <h2 className="text-2xl font-bold text-white dark:text-white">
                     {t("menu")}
                 </h2>
             </div>
 
             {/* Map Style */}
-            <div className="p-6 border-b border-stone-200 dark:border-stone-700">
-                <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
+            <div className="p-6 border-b border-stone-700 dark:border-stone-700">
+                <h3 className="text-sm font-semibold text-stone-400 dark:text-stone-400 uppercase tracking-wide mb-3">
                     {t("mapStyle")}
                 </h3>
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -92,7 +92,7 @@ export default function MenuPanel({
                             ${
                                 mapType === type
                                     ? "bg-blue-500 text-white shadow-md"
-                                    : "bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600"
+                                    : "bg-stone-700 dark:bg-stone-700 text-stone-300 dark:text-stone-300 hover:bg-stone-600 dark:hover:bg-stone-600"
                             }`}
                         >
                             {type as string}
@@ -102,7 +102,7 @@ export default function MenuPanel({
 
                 {/* Language Selector */}
                 <div>
-                    <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
+                    <h3 className="text-sm font-semibold text-stone-400 dark:text-stone-400 uppercase tracking-wide mb-3">
                         {t("language")}
                     </h3>
                     <div className="flex gap-3">
@@ -112,7 +112,7 @@ export default function MenuPanel({
                             className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                                 language === "fi"
                                     ? "bg-blue-500 text-white shadow-md"
-                                    : "bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300"
+                                    : "bg-stone-700 dark:bg-stone-700 hover:bg-stone-600 dark:hover:bg-stone-600 text-stone-300 dark:text-stone-300"
                             }`}
                         >
                             <svg
@@ -145,7 +145,7 @@ export default function MenuPanel({
                             className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                                 language === "en"
                                     ? "bg-blue-500 text-white shadow-md"
-                                    : "bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300"
+                                    : "bg-stone-700 dark:bg-stone-700 hover:bg-stone-600 dark:hover:bg-stone-600 text-stone-300 dark:text-stone-300"
                             }`}
                         >
                             <svg
@@ -199,9 +199,9 @@ export default function MenuPanel({
                             >
                                 <button
                                     className="flex-1 text-left px-3 py-2.5 rounded-lg 
-                                         bg-stone-50 dark:bg-stone-700/50 
-                                         hover:bg-blue-50 dark:hover:bg-stone-700
-                                         text-stone-700 dark:text-stone-300
+                                         bg-stone-700/50 dark:bg-stone-700/50 
+                                         hover:bg-stone-700 dark:hover:bg-stone-700
+                                         text-stone-300 dark:text-stone-300
                                          transition-all duration-200 font-medium"
                                     onClick={() => onStationSelect(station)}
                                 >
@@ -209,10 +209,10 @@ export default function MenuPanel({
                                 </button>
                                 <button
                                     onClick={() => removeStation(station.id)}
-                                    className="p-2.5 bg-stone-100 dark:bg-stone-700 
+                                    className="p-2.5 bg-stone-700 dark:bg-stone-700 
                                        hover:bg-red-500 dark:hover:bg-red-500
                                        hover:text-white
-                                       text-stone-600 dark:text-stone-400
+                                       text-stone-400 dark:text-stone-400
                                        rounded-lg transition-all duration-200 
                                        "
                                     aria-label="Remove station"
@@ -234,7 +234,7 @@ export default function MenuPanel({
                             </li>
                         ))
                     ) : (
-                        <li className="text-stone-500 dark:text-stone-400 text-center py-8 italic">
+                        <li className="text-stone-400 dark:text-stone-400 text-center py-8 italic">
                             No bookmarked stations yet
                         </li>
                     )}

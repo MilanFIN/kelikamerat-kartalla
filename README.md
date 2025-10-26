@@ -24,6 +24,7 @@ Packaged as a PWA with [Capacitor](https://capacitorjs.com/)
 
 Running locally:
 
+* build vite project: `npm run build`
 * sync vite dist to android project: `npx cap sync android`
 * open in android studio: `npx cap open android`
 

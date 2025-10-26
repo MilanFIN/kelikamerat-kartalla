@@ -63,16 +63,16 @@ export default function StationModal({
     return (
         <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                       z-30 max-w-9/10   max-h-[85vh] bg-white dark:bg-stone-800 
-                       rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-700 
+                       z-30 max-w-9/10   max-h-[85vh] bg-stone-800 dark:bg-stone-800 
+                       rounded-2xl shadow-2xl border border-stone-700 dark:border-stone-700 
                        p-6 flex flex-col backdrop-blur-sm"
         >
             {" "}
             <button
                 onClick={onClose}
-                className="absolute top-3 right-3 p-2 rounded-lg text-stone-500 hover:text-stone-700 
+                className="absolute top-3 right-3 p-2 rounded-lg text-stone-400 hover:text-stone-200 
                  dark:text-stone-400 dark:hover:text-stone-200 
-                 hover:bg-stone-100 dark:hover:bg-stone-700 
+                 hover:bg-stone-700 dark:hover:bg-stone-700 
                  transition-all duration-200 z-40"
                 aria-label="Close modal"
             >
@@ -91,7 +91,7 @@ export default function StationModal({
                 </svg>
             </button>
             <div className="relative w-full h-full ">
-                    <h2 className="text-2xl font-bold text-stone-900 dark:text-white leading-tight mb-4 mr-8">
+                    <h2 className="text-2xl font-bold text-white dark:text-white leading-tight mb-4 mr-8">
                         {clearName}
                     </h2>
 
@@ -146,7 +146,7 @@ export default function StationModal({
                                    ${
                                        isStarred
                                            ? "bg-amber-500 hover:bg-amber-600 text-white"
-                                           : "bg-stone-100 hover:bg-stone-200 dark:bg-stone-700 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-200"
+                                           : "bg-stone-700 hover:bg-stone-600 dark:bg-stone-700 dark:hover:bg-stone-600 text-stone-200 dark:text-stone-200"
                                    }`}
                         aria-label={
                             isStarred ? "Remove bookmark" : "Add bookmark"
