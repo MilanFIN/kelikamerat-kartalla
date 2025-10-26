@@ -10,5 +10,9 @@
 	"bookmarked": "Kirjanmerkitty",
 	"bookmark": "Kirjanmerkki",
 	"copyUrl": "Kopioi URL",
-	"copied": "Kopioitu"
+	"copied": "Kopioitu",
+	"operational": "Toiminnassa",
+	"notavailable": "Ei saatavilla",
+	"updatedOn": "Päivitetty",
+	"camera": "Kamera"
 }

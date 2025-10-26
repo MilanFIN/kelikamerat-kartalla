@@ -10,5 +10,9 @@
 	"bookmarked": "Bookmarked",
 	"bookmark": "Bookmark",
 	"copyUrl": "Copy URL",
-	"copied": "Copied"
+	"copied": "Copied",
+	"operational": "Operational",
+	"notavailable": "Not Available",
+	"updatedOn": "Updated on",
+	"camera": "Camera"
 }

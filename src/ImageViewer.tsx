@@ -1,104 +1,78 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import ThumbnailScroller from "./ThumbnailScroller";
+import { useTranslation } from "react-i18next";
 
 async function fetchCameraIds(stationId: string) {
     const res = await fetch(
-        `https://kelibackend.vercel.app/api/stations/${stationId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/stations/${stationId}`
     );
     if (!res.ok) {
         throw new Error("Failed to fetch camera IDs");
     }
-    return res.json(); // [{ id: "C0150301" }, ...]
+    return res.json();
 }
 
 interface ImageViewerProps {
     stationId: string;
+    gotClearName: (newNames: any) => void;
 }
 
-export default function ImageViewer({ stationId }: ImageViewerProps) {
-    const {
-        data: cameraIds,
-        isLoading,
-        isError,
-    } = useQuery({
+export default function ImageViewer({ stationId, gotClearName }: ImageViewerProps) {
+    const { t } = useTranslation();
+
+    const { data, isLoading, isError } = useQuery({
         queryKey: ["stationCameras", stationId],
         queryFn: () => fetchCameraIds(stationId),
+        select: (data) => ({
+            cameras: data.cameras.map(
+                (camera: { id: string; name: string; url: string }) => ({
+                    id: camera.id,
+                    name: camera.name,
+                    url: camera.url,
+                })
+            ),
+            operational: data.operational,
+            updated: data.updated,
+            clearNames: data.names
+        }),
     });
 
-    const [thumbnails, setThumbnails] = useState<{ id: string; url: string }[]>(
-        []
-    );
+    const operational = data?.operational || false;
+    const updated = data?.updated || null;
+
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [selectedCameraId, setSelectedCameraId] = useState<string | null>(
         null
     );
 
-    // Fetch thumbnails
+    const [selectedCameraName, setSelectedCameraName] = useState<string | null>(
+        null
+    );
+
     useEffect(() => {
-        if (!cameraIds) return;
-        
-        setSelectedImage(null);
-        setSelectedCameraId(null);
-        setThumbnails([]);
-
-        let isMounted = true;
-        const fetchThumbnails = async () => {
-            const results: { id: string; url: string }[] = [];
-
-            for (const cam of cameraIds) {
-                try {
-                    const res = await fetch(
-                        `https://kelibackend.vercel.app/api/cameras/${cam.id}?thumbnail=true`
-                    );
-                    if (res.ok) {
-                        const blob = await res.blob();
-                        const url = URL.createObjectURL(blob);
-                        results.push({ id: cam.id, url });
-                    }
-                } catch (e) {
-                    console.error("Failed to fetch thumbnail", cam.id, e);
-                }
-            }
-
-            if (isMounted) {
-                setThumbnails(results);
-                if (results.length > 0) {
-                    // Load first full image by default
-                    loadFullImage(results[0].id);
-                }
-            }
-        };
-
-        fetchThumbnails();
-
-        return () => {
-            isMounted = false;
-            thumbnails.forEach((thumb) => URL.revokeObjectURL(thumb.url));
-        };
-    }, [cameraIds]);
+        if (data?.cameras?.length) {
+            loadFullImage(data?.cameras[0]?.id);
+        }
+        gotClearName(data?.clearNames || {});
+    }, [data?.cameras]);
 
     // Load full image when a camera is selected
     const loadFullImage = async (cameraId: string) => {
-        try {
-            const res = await fetch(
-                `https://kelibackend.vercel.app/api/cameras/${cameraId}`
-            );
-            if (res.ok) {
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                setSelectedImage(url);
-                setSelectedCameraId(cameraId);
-            }
-        } catch (e) {
-            console.error("Failed to load full image", cameraId, e);
+        const camera = data?.cameras.find(
+            (cam: { id: string }) => cam.id === cameraId
+        );
+        if (camera) {
+            setSelectedImage(camera.url);
+            setSelectedCameraId(camera.id);
+            setSelectedCameraName(camera.name);
         }
     };
 
     const renderMessage = () => {
         if (isLoading) return "";
         if (isError) return "Error loading cameras";
-        if (!cameraIds || cameraIds.length === 0) return "No cameras available";
+        if (data?.cameras.length === 0) return "No cameras available";
         return null;
     };
 
@@ -137,6 +111,24 @@ export default function ImageViewer({ stationId }: ImageViewerProps) {
                     {message}
                 </p>
             )}
+
+            <h3 className="text-xl font-semibold mb-1">
+                {selectedCameraName ? `${t("camera")}: ${selectedCameraName}` : null}
+            </h3>
+
+            <h3 className="text-lg font-medium mb-2">
+                {operational ? (
+                    <div>
+                        <div>{t("operational")}</div>
+                        <div>
+                            {t("updatedOn")}{" "}
+                            {new Date(updated).toLocaleString("fi-FI")}
+                        </div>
+                    </div>
+                ) : (
+                    t("notavailable")
+                )}
+            </h3>
 
             {/* Full image (or placeholder) */}
             {selectedImage ? (
@@ -179,10 +171,12 @@ export default function ImageViewer({ stationId }: ImageViewerProps) {
             )}
 
             {/* Thumbnails */}
-            <div className="max-w-full overflow-x-scroll"
-                style={{ width: imageSize }}>
+            <div
+                className="max-w-full overflow-x-scroll"
+                style={{ width: imageSize }}
+            >
                 <ThumbnailScroller
-                    thumbnails={thumbnails}
+                    thumbnails={data?.cameras || []}
                     selectedCameraId={selectedCameraId}
                     onThumbnailClick={loadFullImage}
                 />

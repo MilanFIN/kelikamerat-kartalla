@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageViewer from "./ImageViewer";
 import { useStationsContext } from "./providers/stationscontext";
 import { useTranslation } from "react-i18next";
+import { useLanguageContext } from "./providers/languagecontext";
 
 interface StationModalProps {
     stationId: any;
@@ -17,12 +18,28 @@ export default function StationModal({
     onClose,
 }: StationModalProps) {
     const [copied, setCopied] = useState(false);
+    const { language } = useLanguageContext()
 
     const { stations, addStation, removeStation } = useStationsContext();
     const [isStarred, setIsStarred] = useState(
         stations.some((station: { id: any }) => station.id === stationId)
     );
+
+    const [clearName, setClearName] = useState(stationName);
+
     const { t } = useTranslation();
+
+    useEffect(() => {
+        setClearName(stationName);
+    }, [stationName]);
+
+    //todo: make language change make the name change without reopening modal 
+    const gotClearName = (newName: any) =>  {
+        console.log(newName, language);
+        if (newName && typeof newName === "object" && language in newName) {
+            setClearName(newName[language]);
+        }
+    }
 
     const handleCopyUrl = async () => {
         try {
@@ -46,7 +63,7 @@ export default function StationModal({
     return (
         <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                       z-30 max-w-9/10  mx-4 max-h-[85vh] bg-white dark:bg-stone-800 
+                       z-30 max-w-9/10   max-h-[85vh] bg-white dark:bg-stone-800 
                        rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-700 
                        p-6 flex flex-col backdrop-blur-sm"
         >
@@ -74,8 +91,8 @@ export default function StationModal({
                 </svg>
             </button>
             <div className="relative w-full h-full ">
-                    <h2 className="text-2xl font-bold text-stone-900 dark:text-white leading-tight mb-4">
-                        {stationName}
+                    <h2 className="text-2xl font-bold text-stone-900 dark:text-white leading-tight mb-4 mr-8">
+                        {clearName}
                     </h2>
 
                 <div className="flex gap-3 mb-6">
@@ -155,7 +172,7 @@ export default function StationModal({
                 </div>
 
                 <div className="flex-1 w-full rounded-lg overflow-hidden  ">
-                    <ImageViewer stationId={stationId} />
+                    <ImageViewer stationId={stationId} gotClearName={gotClearName} />
                 </div>
             </div>
         </div>

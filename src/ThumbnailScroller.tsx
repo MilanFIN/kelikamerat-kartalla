@@ -32,7 +32,7 @@ export default function ThumbnailScroller({
                         }`}
                     >
                         <img
-                            src={(thumb as Thumbnail).url}
+                            src={(thumb as Thumbnail).url + "?thumbnail=true"}
                             alt={`Thumbnail ${(thumb as Thumbnail).id}`}
                             className="w-full h-full object-cover"
                         />

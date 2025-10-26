@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next"
 
 // Fetcher function
 async function fetchStations() {
-  const res = await fetch("https://kelibackend.vercel.app/api/stations")
+  const res = await fetch(import.meta.env.VITE_BACKEND_URL+"/api/stations")
   if (!res.ok) {
     throw new Error("Network response was not ok")
   }
