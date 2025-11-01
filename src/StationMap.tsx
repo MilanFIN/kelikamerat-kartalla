@@ -136,10 +136,10 @@ export default function StationMap({
                         <Popup>
                             <div className="p-2 min-w-[200px]">
                                 <div className="mb-3">
-                                    <strong className="text-base font-bold text-stone-900 block mb-1">
+                                    <strong className="text-base font-bold text-white block mb-1">
                                         {station.name}
                                     </strong>
-                                    <span className="text-xs text-stone-600">
+                                    <span className="text-xs text-white">
                                         {t("updated")}:{" "}
                                         {new Date(station.updatedTime).toLocaleString()}
                                     </span>

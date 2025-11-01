@@ -14,5 +14,6 @@
 	"operational": "Operational",
 	"notavailable": "Not Available",
 	"updatedOn": "Updated on",
-	"camera": "Camera"
+	"camera": "Camera",
+	"loading": "Loading..."
 }

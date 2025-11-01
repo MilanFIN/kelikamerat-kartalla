@@ -1,8 +1,10 @@
 "use client"
 
+
 import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import "leaflet/dist/leaflet.css"
+import "./App.css";
 import Navbar from "./Navbar"
 import StationMap from "./StationMap"
 import StationModal from "./StationModal"

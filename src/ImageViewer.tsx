@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import ThumbnailScroller from "./ThumbnailScroller";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +19,10 @@ interface ImageViewerProps {
     gotClearName: (newNames: any) => void;
 }
 
-export default function ImageViewer({ stationId, gotClearName }: ImageViewerProps) {
+export default function ImageViewer({
+    stationId,
+    gotClearName,
+}: ImageViewerProps) {
     const { t } = useTranslation();
 
     const { data, isLoading, isError } = useQuery({
@@ -34,40 +38,69 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
             ),
             operational: data.operational,
             updated: data.updated,
-            clearNames: data.names
+            clearNames: data.names,
         }),
     });
 
-    const operational = data?.operational || false;
+    const operational = isLoading ? null : data?.operational || false;
     const updated = data?.updated || null;
 
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [selectedCameraId, setSelectedCameraId] = useState<string | null>(
         null
     );
-
     const [selectedCameraName, setSelectedCameraName] = useState<string | null>(
         null
     );
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     useEffect(() => {
         if (data?.cameras?.length) {
-            loadFullImage(data?.cameras[0]?.id);
+            loadFullImage(data.cameras[0].id);
         }
         gotClearName(data?.clearNames || {});
     }, [data?.cameras]);
 
-    // Load full image when a camera is selected
     const loadFullImage = async (cameraId: string) => {
-        const camera = data?.cameras.find(
-            (cam: { id: string }) => cam.id === cameraId
-        );
+        const camera = data?.cameras.find((cam: any) => cam.id === cameraId);
         if (camera) {
             setSelectedImage(camera.url);
             setSelectedCameraId(camera.id);
             setSelectedCameraName(camera.name);
         }
     };
+
+    const handlePrev = (e?: React.MouseEvent | KeyboardEvent) => {
+        e?.stopPropagation?.();
+        if (!data?.cameras || !selectedCameraId) return;
+        const currentIndex = data.cameras.findIndex(
+            (cam: any) => cam.id === selectedCameraId
+        );
+        const prevIndex =
+            currentIndex === 0 ? data.cameras.length - 1 : currentIndex - 1;
+        loadFullImage(data.cameras[prevIndex].id);
+    };
+
+    const handleNext = (e?: React.MouseEvent | KeyboardEvent) => {
+        e?.stopPropagation?.();
+        if (!data?.cameras || !selectedCameraId) return;
+        const currentIndex = data.cameras.findIndex(
+            (cam: any) => cam.id === selectedCameraId
+        );
+        const nextIndex =
+            currentIndex === data.cameras.length - 1 ? 0 : currentIndex + 1;
+        loadFullImage(data.cameras[nextIndex].id);
+    };
+
+    // Optional: Keyboard navigation (← → keys)
+    useEffect(() => {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === "ArrowLeft") handlePrev(e);
+            if (e.key === "ArrowRight") handleNext(e);
+        };
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, [data?.cameras, selectedCameraId]);
 
     const renderMessage = () => {
         if (isLoading) return "";
@@ -85,10 +118,7 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
     const [imageSize, setImageSize] = useState(calcImageSize);
 
     useEffect(() => {
-        const handleResize = () => {
-            setImageSize(calcImageSize());
-        };
-
+        const handleResize = () => setImageSize(calcImageSize());
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -96,8 +126,8 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
     const message = renderMessage();
 
     return (
-        <div className="flex flex-col mt-2 items-start w-full h-full">
-            {/* Status message if needed */}
+        <div className="flex flex-col mt-2 items-start w-full h-full relative">
+            {/* Status message */}
             {message && (
                 <p
                     className={`text-sm ${
@@ -113,11 +143,15 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
             )}
 
             <h3 className="text-xl font-semibold mb-1">
-                {selectedCameraName ? `${t("camera")}: ${selectedCameraName}` : null}
+                {selectedCameraName
+                    ? `${t("camera")}: ${selectedCameraName}`
+                    : null}
             </h3>
 
             <h3 className="text-lg font-medium mb-2">
-                {operational ? (
+                {operational === null ? (
+                    t("loading")
+                ) : operational ? (
                     <div>
                         <div>{t("operational")}</div>
                         <div>
@@ -130,35 +164,38 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
                 )}
             </h3>
 
-            {/* Full image (or placeholder) */}
+            {/* Main image */}
             {selectedImage ? (
                 <div
                     style={{
                         maxWidth: imageSize,
                         maxHeight: (imageSize * 9) / 16,
                     }}
-                    className="relative group"
+                    className="relative group cursor-pointer"
+                    onClick={() => setIsFullscreen(true)}
                 >
                     <img
                         src={selectedImage}
                         alt={`Camera ${selectedCameraId}`}
-                        className="object-contain object-left rounded-lg w-full h-full"
+                        className="object-contain object-left rounded-lg w-full h-full transition-transform"
                     />
 
                     {/* Prev button */}
                     <button
+                        onClick={handlePrev}
                         className="absolute top-1/2 left-2 -translate-y-1/2 
-               bg-black bg-opacity-40 text-white rounded-full p-2 pt-1
-               opacity-0 group-hover:opacity-100 transition text-lg"
+                        bg-black bg-opacity-40 text-white rounded-full p-2 pt-1
+                        opacity-0 group-hover:opacity-100 transition text-lg"
                     >
                         ◀
                     </button>
 
                     {/* Next button */}
                     <button
+                        onClick={handleNext}
                         className="absolute top-1/2 right-2 -translate-y-1/2 
-               bg-black bg-opacity-40 text-white rounded-full p-2 pt-1
-               opacity-0 group-hover:opacity-100 transition text-lg"
+                        bg-black bg-opacity-40 text-white rounded-full p-2 pt-1
+                        opacity-0 group-hover:opacity-100 transition text-lg"
                     >
                         ▶
                     </button>
@@ -166,7 +203,7 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
             ) : (
                 <div
                     style={{ width: imageSize, height: (imageSize * 9) / 16 }}
-                    className="aspect-[16/9]  bg-gray-200 rounded-lg animate-pulse"
+                    className="aspect-[16/9] bg-gray-200 rounded-lg animate-pulse"
                 />
             )}
 
@@ -181,6 +218,38 @@ export default function ImageViewer({ stationId, gotClearName }: ImageViewerProp
                     onThumbnailClick={loadFullImage}
                 />
             </div>
+
+            {/* Fullscreen overlay */}
+            {isFullscreen &&
+                createPortal(
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[9999] cursor-zoom-out"
+                        onClick={() => setIsFullscreen(false)}
+                    >
+                        <img
+                            src={selectedImage!}
+                            alt="Fullscreen view"
+                            className="max-w-[95%] max-h-[90%] object-contain rounded-lg transition-transform duration-300 scale-100"
+                        />
+
+                        {/* Prev / Next buttons in fullscreen */}
+                        <button
+                            onClick={handlePrev}
+                            className="absolute top-1/2 left-6 -translate-y-1/2 
+                            bg-black bg-opacity-40 text-white rounded-full p-3 text-2xl"
+                        >
+                            ◀
+                        </button>
+                        <button
+                            onClick={handleNext}
+                            className="absolute top-1/2 right-6 -translate-y-1/2 
+                            bg-black bg-opacity-40 text-white rounded-full p-3 text-2xl"
+                        >
+                            ▶
+                        </button>
+                    </div>,
+                    document.body
+                )}
         </div>
     );
 }

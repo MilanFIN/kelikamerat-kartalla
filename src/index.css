@@ -43,3 +43,8 @@ h1 {
 }
 
 
+
+.leaflet-popup-content-wrapper {
+  animation: fadeInGrow 300ms ease-out;
+  background-color: #292524;
+}
