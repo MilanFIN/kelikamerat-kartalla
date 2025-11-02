@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import ThumbnailScroller from "./ThumbnailScroller";
 import { useTranslation } from "react-i18next";
+import { App } from '@capacitor/app';
 
 async function fetchCameraIds(stationId: string) {
     const res = await fetch(
@@ -53,6 +54,7 @@ export default function ImageViewer({
         null
     );
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
     useEffect(() => {
         if (data?.cameras?.length) {
@@ -123,6 +125,37 @@ export default function ImageViewer({
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchStartX(e.changedTouches[0].screenX);
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (touchStartX === null) return;
+        const touchEndX = e.changedTouches[0].screenX;
+        const deltaX = touchEndX - touchStartX;
+
+        if (Math.abs(deltaX) < 50) return; // ignore small swipes
+
+        if (deltaX > 0) handlePrev(); // swipe right → previous
+        else handleNext(); // swipe left → next
+
+        setTouchStartX(null);
+    };
+
+    useEffect(() => {
+        const backHandler = App.addListener('backButton', (event: { preventDefault: () => void; }) => {
+          if (isFullscreen) {
+            // Exit fullscreen instead of going back
+            setIsFullscreen(false);
+            event.preventDefault(); // Stop default behavior
+          }
+        });
+      
+        return () => {
+          backHandler.remove();
+        };
+      }, [isFullscreen]);
+
     const message = renderMessage();
 
     return (
@@ -173,6 +206,8 @@ export default function ImageViewer({
                     }}
                     className="relative group cursor-pointer"
                     onClick={() => setIsFullscreen(true)}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
                 >
                     <img
                         src={selectedImage}
@@ -225,6 +260,8 @@ export default function ImageViewer({
                     <div
                         className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[9999] cursor-zoom-out"
                         onClick={() => setIsFullscreen(false)}
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
                     >
                         <img
                             src={selectedImage!}
