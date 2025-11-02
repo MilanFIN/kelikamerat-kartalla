@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import ThumbnailScroller from "./ThumbnailScroller";
 import { useTranslation } from "react-i18next";
-import { App } from '@capacitor/app';
+import { App } from "@capacitor/app";
 
 async function fetchCameraIds(stationId: string) {
     const res = await fetch(
@@ -134,27 +134,31 @@ export default function ImageViewer({
         const touchEndX = e.changedTouches[0].screenX;
         const deltaX = touchEndX - touchStartX;
 
-        if (Math.abs(deltaX) < 50) return; // ignore small swipes
+        if (Math.abs(deltaX) < 60) return; // ignore small swipes
 
         if (deltaX > 0) handlePrev(); // swipe right → previous
         else handleNext(); // swipe left → next
 
         setTouchStartX(null);
     };
-
     useEffect(() => {
-        const backHandler = App.addListener('backButton', (event: { preventDefault: () => void; }) => {
-          if (isFullscreen) {
-            // Exit fullscreen instead of going back
-            setIsFullscreen(false);
-            event.preventDefault(); // Stop default behavior
-          }
+        let handler: any;
+
+        // Register listener
+        App.addListener("backButton", (event:any) => {
+            if (isFullscreen) {
+                setIsFullscreen(false);
+                event.preventDefault(); // Prevent default back action
+            }
+        }).then((h) => {
+            handler = h; // Store the listener handle
         });
-      
+
+        // Cleanup
         return () => {
-          backHandler.remove();
+            if (handler) handler.remove();
         };
-      }, [isFullscreen]);
+    }, [isFullscreen]);
 
     const message = renderMessage();
 
