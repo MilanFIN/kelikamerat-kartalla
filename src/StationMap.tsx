@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import { Geolocation } from "@capacitor/geolocation";
 // @ts-ignore
-import "leaflet.markercluster";
-//import "leaflet.markercluster/dist/leaflet.markercluster";
+import "leaflet.markercluster/dist/leaflet.markercluster";
+// import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
@@ -56,32 +56,40 @@ function ClusterLayer({
     const clusterGroup = L.markerClusterGroup({
       chunkedLoading: true,
       maxClusterRadius: 60,
-      iconCreateFunction: (cluster:any) => {
+      iconCreateFunction: (cluster: any) => {
         const count = cluster.getChildCount();
-        let color =
-          count < 10
-            ? "rgba(37,99,235,0.9)"
-            : count < 50
-            ? "rgba(234,179,8,0.9)"
-            : "rgba(239,68,68,0.9)";
+
+        // pick stroke color based on density
+        const strokeColor = "#374151";
+
+        // SVG circle styled like your camera marker (no rectangle/triangle)
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" fill="white" stroke="${strokeColor}" stroke-width="2"/>
+          </svg>
+          <div style="
+            position:absolute;
+            top:0;
+            left:0;
+            width:36px;
+            height:36px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:600;
+            font-size:14px;
+            color:${strokeColor};
+            font-family:sans-serif;
+          ">
+            ${count}
+          </div>
+        `;
+
         return L.divIcon({
-          html: `
-            <div style="
-              background:${color};
-              color:white;
-              border-radius:50%;
-              width:40px;
-              height:40px;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              border:2px solid white;
-              box-shadow:0 0 6px rgba(0,0,0,0.3);
-            ">
-              ${count}
-            </div>`,
-          className: "",
-          iconSize: [40, 40],
+          html: svg,
+          className: "cluster-icon",
+          iconSize: [36, 36],
+          iconAnchor: [18, 18],
         });
       },
     });
