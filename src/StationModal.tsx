@@ -79,7 +79,7 @@ export default function StationModal({
       );
 
       const data = await res.json();
-      //if (!res.ok) throw new Error(data?.error || "Request failed");
+      if (!res.ok) throw new Error(data?.error || "Request failed");
       setSendStatus("ok");
       reloadInterestingStations();
     } catch (err) {

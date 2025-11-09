@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import "leaflet/dist/leaflet.css"
 import "./App.css"
 import Navbar from "./Navbar"
@@ -35,8 +35,6 @@ function App() {
   useEffect(() => {
     i18n.changeLanguage(language)
   }, [language, i18n])
-
-  const queryClient = useQueryClient();
 
   // --- Fetch all stations ---
   const {
