@@ -15,5 +15,10 @@
 	"notavailable": "Not Available",
 	"updatedOn": "Updated on",
 	"camera": "Camera",
-	"loading": "Loading..."
+	"loading": "Loading...",
+	"sending": "Sending...",
+	"sent": "Sent",
+	"error": "Error",
+	"send": "Send",
+	"interestingStations": "Interesting Stations"
 }

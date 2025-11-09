@@ -15,5 +15,10 @@
 	"notavailable": "Ei saatavilla",
 	"updatedOn": "Päivitetty",
 	"camera": "Kamera",
-	"loading": "Ladataan..."
+	"loading": "Ladataan...",
+	"sending": "Lähetetään...",
+	"sent": "Lähetetty",
+	"error": "Virhe",
+	"send": "Lähetä",
+	"interestingStations": "Mielenkiintoiset asemat"
 }

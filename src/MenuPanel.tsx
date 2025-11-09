@@ -11,12 +11,16 @@ interface MenuPanelProps {
     visible: boolean;
     onClose: () => void;
     onStationSelect: (station: any) => void;
+    allStations?: any[];
+    interestingStations?: any[];
 }
 
 export default function MenuPanel({
     visible,
     onClose,
     onStationSelect,
+    allStations = [],
+    interestingStations = [],
 }: MenuPanelProps) {
     const [isPortrait, setIsPortrait] = useState(
         typeof window !== "undefined"
@@ -25,7 +29,6 @@ export default function MenuPanel({
     );
     const panelRef = useRef<HTMLDivElement>(null);
 
-    
     const { stations, removeStation } = useStationsContext();
     const { mapType, setMapType } = useMapTypeContext();
     const { language, setLanguage } = useLanguageContext();
@@ -65,7 +68,7 @@ export default function MenuPanel({
         <div
             ref={panelRef}
             className={`absolute bg-stone-800 dark:bg-stone-800 shadow-2xl z-30 
-                       border-r border-stone-700 dark:border-stone-700
+                       border-r border-stone-700 dark:border-stone-700 overflow-y-scroll
                        ${
                            isPortrait
                                ? "top-20 left-0 w-full min-h-64 border-b"
@@ -186,7 +189,7 @@ export default function MenuPanel({
             </div>
 
             {/* Bookmarked Stations */}
-            <div className="p-6">
+            <div className="p-6 border-b border-stone-700 dark:border-stone-700">
                 <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
                     {t("bookmarkedStations")}
                 </h3>
@@ -236,6 +239,54 @@ export default function MenuPanel({
                     ) : (
                         <li className="text-stone-400 dark:text-stone-400 text-center py-8 italic">
                             No bookmarked stations yet
+                        </li>
+                    )}
+                </ul>
+            </div>
+            <div className="p-6">
+                <h3 className="text-sm font-semibold text-stone-600 dark:text-stone-400 uppercase tracking-wide mb-3">
+                    {t("interestingStations")}
+                </h3>
+                <ul className="space-y-2">
+                    {interestingStations.length > 0 ? (
+                        interestingStations.map((station: any, index: any) => {
+                            // find the full station object in allStations by ID
+                            const matchedStation = allStations?.find(
+                                (s: any) => s.id === station.stationId
+                            );
+                            console.log("Interesting station:", station);
+                            console.log("Matched station:", matchedStation);
+
+                            return (
+                                <li
+                                    key={index}
+                                    className="flex items-center gap-2 group"
+                                >
+                                    <button
+                                        className="flex-1 text-left px-3 py-2.5 rounded-lg 
+                       bg-stone-700/50 dark:bg-stone-700/50 
+                       hover:bg-stone-700 dark:hover:bg-stone-700
+                       text-stone-300 dark:text-stone-300
+                       transition-all duration-200 font-medium"
+                                        onClick={() =>
+                                            onStationSelect(matchedStation)
+                                        }
+                                    >
+                                        <span className="font-bold text-red-500 dark:text-red-500">
+                                            +
+                                            {new Intl.NumberFormat(
+                                                "fi-FI"
+                                            ).format(station.count)}
+                                        </span>{" "}
+                                        {matchedStation?.name ||
+                                            "Unknown station"}
+                                    </button>
+                                </li>
+                            );
+                        })
+                    ) : (
+                        <li className="text-stone-400 dark:text-stone-400 text-center py-8 italic">
+                            Nothing interesting has been reported yet
                         </li>
                     )}
                 </ul>

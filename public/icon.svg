@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1024" height="1024" viewBox="110 100 800 824"
+     role="img" aria-label="Bold camera icon with contained yellow accent line">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#46a366"/>
+      <stop offset="100%" stop-color="#2e7d4b"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+
+    <!-- Clip path for rounded background -->
+    <!-- <clipPath id="bgClip">
+      <rect x="48" y="48" width="928" height="928" rx="180" ry="180" />
+    </clipPath> -->
+    <clipPath id="bgClip">
+      <circle cx="512" cy="512" r="512" />
+    </clipPath>
+  </defs>
+
+  <!-- Rounded green background -->
+  <circle cx="512" cy="512" r="464" fill="url(#bgGrad)" />
+
+
+
+  <!-- Fat camera body -->
+  <g transform="translate(132 140)" filter="url(#shadow)">
+    <!-- Main body -->
+    <rect x="0" y="120" width="760" height="520" rx="90" ry="90"
+          fill="#ffffff" stroke="#133424" stroke-width="36"/>
+    <!-- Top housing bump -->
+    <rect x="140" y="40" width="220" height="100" rx="25" ry="25"
+          fill="#ffffff" stroke="#133424" stroke-width="30"/>
+    <!-- Outer lens ring -->
+    <circle cx="380" cy="380" r="150"
+            fill="#f2f8f4" stroke="#133424" stroke-width="36"/>
+    <!-- Inner lens -->
+    <circle cx="380" cy="380" r="90"
+            fill="#cfe9ed" stroke="#0c5165" stroke-width="16"/>
+  </g>
+</svg>
