@@ -254,8 +254,6 @@ export default function MenuPanel({
                             const matchedStation = allStations?.find(
                                 (s: any) => s.id === station.stationId
                             );
-                            console.log("Interesting station:", station);
-                            console.log("Matched station:", matchedStation);
 
                             return (
                                 <li
@@ -286,7 +284,7 @@ export default function MenuPanel({
                         })
                     ) : (
                         <li className="text-stone-400 dark:text-stone-400 text-center py-8 italic">
-                            Nothing interesting has been reported yet
+                            {t("nothingInteresting")}
                         </li>
                     )}
                 </ul>

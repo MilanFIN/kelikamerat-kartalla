@@ -302,7 +302,7 @@ export default function StationMap({
                                         {t("updated")}:{" "}
                                         {new Date(
                                             station.updatedTime
-                                        ).toLocaleString()}
+                                        ).toLocaleString("fi-FI")}
                                     </span>
                                     <br />
                                     <span className="text-xs text-yellow-400">

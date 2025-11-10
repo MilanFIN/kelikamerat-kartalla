@@ -19,6 +19,8 @@
 	"sending": "Lähetetään...",
 	"sent": "Lähetetty",
 	"error": "Virhe",
-	"send": "Lähetä",
-	"interestingStations": "Mielenkiintoiset asemat"
+	"send": "Täällä tapahtuu",
+	"interestingStations": "Näillä asemilla tapahtuu",
+	"nothingInteresting": "Ei ilmoitettuja asemia",
+	"views": "Ilmoituksia"
 }

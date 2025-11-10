@@ -19,6 +19,8 @@
 	"sending": "Sending...",
 	"sent": "Sent",
 	"error": "Error",
-	"send": "Send",
-	"interestingStations": "Interesting Stations"
+	"send": "Something happening here",
+	"interestingStations": "Stations reported interesting",
+	"nothingInteresting": "Nothing interesting reported",
+	"views": "Reports"
 }

@@ -167,7 +167,7 @@ export default function StationModal({
               ? "✅ "+ t("sent") +"!"
               : sendStatus === "error"
               ? "⚠️ " + t("error")
-              : "🔴 " + t("send")}
+              : t("send")}
           </button>
         </div>
 
